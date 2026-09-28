@@ -78,16 +78,6 @@ const ServiceCard = ({
         <p className="mb-6 text-sm md:text-base text-zinc-200">
           {description}
         </p>
-
-        <Link
-          href={href}
-          className="mt-auto inline-flex items-center text-zinc-100 transition-colors duration-300 group-hover:underline underline-offset-4"
-          prefetch={false}
-          aria-label={`Learn more about ${title}`}
-        >
-          Learn More
-          <MdArrowForward className="ml-1 w-4 h-4" />
-        </Link>
       </div>
     </motion.div>
   );

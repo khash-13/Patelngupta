@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { BsTelephone } from "react-icons/bs";
 import { FaWhatsapp } from "react-icons/fa6";
-
 import MobileNav from "./MobileNav";
 import { links } from "@/lib/data";
 
@@ -31,7 +31,6 @@ const Navbar: React.FC<{ appName?: string }> = ({
     };
 
     handleScroll();
-
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -75,13 +74,14 @@ const Navbar: React.FC<{ appName?: string }> = ({
           aria-label={`${appName} home`}
           className="
             relative z-10
-            flex h-10 w-36
+            flex h-11 w-40
             shrink-0 items-center
             overflow-hidden
             transition-transform duration-300
             hover:scale-[1.02]
-            sm:w-40
-            md:w-44
+            sm:w-44
+            md:h-12 md:w-48
+            lg:w-52
           "
         >
           <Image
@@ -115,7 +115,7 @@ const Navbar: React.FC<{ appName?: string }> = ({
                           h-10
                           bg-transparent
                           px-3
-                          text-sm
+                          text-[15px]
                           font-normal
                           capitalize
                           text-zinc-700
@@ -144,33 +144,31 @@ const Navbar: React.FC<{ appName?: string }> = ({
                             p-2
                           "
                         >
-                          {link.pages.map(
-                            (page, pageIndex) => {
-                              const pageActive =
-                                pathname === page.href;
+                          {link.pages.map((page, pageIndex) => {
+                            const pageActive =
+                              pathname === page.href;
 
-                              return (
-                                <Link
-                                  key={pageIndex}
-                                  href={page.href}
-                                  className={`
-                                    rounded-lg
-                                    px-3 py-2
-                                    text-sm
-                                    capitalize
-                                    transition-colors duration-200
-                                    ${
-                                      pageActive
-                                        ? "bg-zinc-100 font-medium text-zinc-950"
-                                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-950"
-                                    }
-                                  `}
-                                >
-                                  {page.head}
-                                </Link>
-                              );
-                            }
-                          )}
+                            return (
+                              <Link
+                                key={pageIndex}
+                                href={page.href}
+                                className={`
+                                  rounded-lg
+                                  px-3 py-2
+                                  text-[15px]
+                                  capitalize
+                                  transition-colors duration-200
+                                  ${
+                                    pageActive
+                                      ? "bg-zinc-100 font-medium text-zinc-950"
+                                      : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-950"
+                                  }
+                                `}
+                              >
+                                {page.head}
+                              </Link>
+                            );
+                          })}
                         </div>
                       </NavigationMenuContent>
                     </>
@@ -184,7 +182,7 @@ const Navbar: React.FC<{ appName?: string }> = ({
                           items-center
                           rounded-lg
                           px-3
-                          text-sm
+                          text-[15px]
                           font-normal
                           capitalize
                           text-zinc-700
@@ -271,9 +269,7 @@ const Navbar: React.FC<{ appName?: string }> = ({
                 group-hover:bg-[#7977C6]/15
               "
             >
-              <BsTelephone
-                className="h-4 w-4 text-[#7977C6]"
-              />
+              <BsTelephone className="h-4 w-4 text-[#7977C6]" />
             </div>
 
             <div className="flex flex-col leading-none">
@@ -281,7 +277,7 @@ const Navbar: React.FC<{ appName?: string }> = ({
                 Hotline
               </span>
 
-              <span className="text-sm font-semibold text-zinc-800">
+              <span className="text-[15px] font-semibold text-zinc-800">
                 0731-2405500
               </span>
             </div>

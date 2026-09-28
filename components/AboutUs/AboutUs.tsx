@@ -114,6 +114,7 @@ const Story = () => {
   return (
     <section ref={ref} className="w-full px-4 py-12 lg:px-[120px] lg:py-20">
       <div className="mx-auto grid max-w-screen-xl gap-8 lg:grid-cols-[1fr_2fr] lg:gap-16">
+        <div className="w-full h-full relative">
         <motion.h2
           variants={fadeInOut("down", "tween", 0.2, 0.5)}
           {...reveal(isInView)}
@@ -121,6 +122,22 @@ const Story = () => {
         >
           Our Story
         </motion.h2>
+
+        <div className="w-full h-5/6 absolute bottom-0">
+                <motion.div
+          variants={fadeInOut("right", "tween", 0.2, 0.8)}
+          {...reveal(isInView)}
+          className="relative aspect-[4/4] w-full overflow-hidden rounded-2xl lg:sticky lg:top-24 lg:aspect-[4/4] lg:self-start"
+        >
+          <Image
+            src="/assets/images/foundingM.jpg"
+            alt="The PATEL & GUPTA team at work"
+            fill
+            className="object-cover"
+          />
+        </motion.div>
+        </div>
+        </div>
 
         <motion.div
           variants={fadeInOut("up", "tween", 0.2, 0.8)}
@@ -198,7 +215,7 @@ const pillars: Pillar[] = [
 
 const highlights = [
   { value: "2000", label: "Year established" },
-  { value: "4", label: "Founding partners" },
+  { value: "2", label: "Founding partners" },
   { value: "Multi-state", label: "Branch network" },
 ];
 
@@ -216,13 +233,12 @@ const Business = () => {
         <motion.div
           variants={fadeInOut("right", "tween", 0.2, 0.8)}
           {...reveal(isInView)}
-          className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl lg:sticky lg:top-24 lg:aspect-[4/5] lg:self-start"
+          className="relative aspect-[5/4] w-full overflow-hidden rounded-2xl lg:sticky lg:top-24 lg:aspect-[5/4] lg:self-start"
         >
           <Image
-            src="/assets/images/aboutUsPage.jpg"
+            src="/assets/images/aboutBanner.jpg"
             alt="The PATEL & GUPTA team at work"
             fill
-            sizes="(min-width: 1280px) 600px, (min-width: 1024px) 45vw, 100vw"
             className="object-cover"
           />
         </motion.div>
@@ -498,7 +514,7 @@ const ourTeam: CardData[] = [
     name: "C.A. GUNJAN JAIN",
     description:
       "C.A. Gunjan Jain supports clients with GST and indirect tax matters, from registration and returns to reconciliations, keeping businesses accurate and on time.",
-    img: "/assets/team/ca_gunjan_jain.jpg",
+    img: "/assets/team/ca_gunjan_jain_3.jpg",
     // social: [
     //   {
     //     id: 1,

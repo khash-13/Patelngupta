@@ -102,29 +102,30 @@ const contact: ContactValues[] = [
   },
 ];
 
+
 const maps = [
   {
-    id: 0,
-    label: "HEAD OFFICE",
-    mapSrc:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d913.2357915794278!2d76.73353796953167!3d23.713723526539138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397b5c81d4fbc421%3A0x2866d28af518a554!2sMandi%20Road%2C%20Pachore%2C%20Madhya%20Pradesh%20465683!5e0!3m2!1sen!2sin!4v1725611130870!5m2!1sen!2sin",
-  },
-  {
     id: 1,
-    label: "BRANCH 1",
+    label: "Head Office - Indore",
     mapSrc:
       "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7482.875210368742!2d75.86785456070011!3d22.702077083233164!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd1dfc0a9c5f%3A0x23a5731660493bcf!2sPATEL%20%26%20GUPTA%2C%20Chartered%20Accountants!5e0!3m2!1sen!2sin!4v1724614880575!5m2!1sen!2sin",
   },
   {
+    id: 0,
+    label: "Banglore",
+    mapSrc: 
+    "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d243.01440620786192!2d77.7312179!3d12.9570972!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae121183eeffc9%3A0x10bb19d12094365f!2s269%2C%20Nallurahalli%20Main%20Rd%2C%20near%20Shell%2C%20Phase%201%2C%20Siddapura%2C%20Whitefield%2C%20Bengaluru%2C%20Karnataka%20560066!5e0!3m2!1sen!2sin!4v1790620042822!5m2!1sen!2sin"
+  },
+  {
     id: 2,
-    label: "BRANCH 2",
+    label: "Khategoan",
     mapSrc:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.1697494748973!2d77.73943687420481!3d12.960987415112644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1208fa753b31%3A0x2105723c5ef449a0!2sRohini%20Gardens!5e0!3m2!1sen!2sin!4v1725611221241!5m2!1sen!2sin",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.5524109487865!2d76.91382109999999!3d22.595837799999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397d170c1d980fdd%3A0xf5c16b257ed43d0d!2sTADA%20COMPLEX!5e0!3m2!1sen!2sin!4v1790620101792!5m2!1sen!2sin"
   },
   {
     id: 3,
-    label: "BRANCH 3",
+    label: "Harda",
     mapSrc:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.5510281449965!2d76.9113067744341!3d22.595889482117997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397d170c1071962d%3A0x7a372b6bf7c0c474!2sPatel%20%26%20Gupta!5e0!3m2!1sen!2sin!4v1725611387186!5m2!1sen!2sin",
+      "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d230.65400571792958!2d77.0896446!3d22.3360988!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397d70d84167d51d%3A0x2909a85adeb611fb!2sPunjab%20National%20Bank!5e0!3m2!1sen!2sin!4v1790620161916!5m2!1sen!2sin"
   },
 ];
