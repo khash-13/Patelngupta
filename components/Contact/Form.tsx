@@ -1,348 +1,356 @@
 "use client";
 
-import { fadeInOut } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useRef, useState } from "react";
+import Image from "next/image";
+import { IconType } from "react-icons";
+import {
+  MdOutlineEmail,
+  MdOutlinePhone,
+  MdOutlineLocationOn,
+} from "react-icons/md";
+import { motion, useInView } from "framer-motion";
+import { fadeInOut } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { sendEmail } from "@/lib/actions/sendEmail.action";
 import { toast } from "../ui/use-toast";
+import { FaWhatsapp } from "react-icons/fa";
+
+/* -------------------------------------------------------------------------- */
+/*  Layout                                                                    */
+/* -------------------------------------------------------------------------- */
+
+const linkClass =
+  "block break-words text-base text-white underline-offset-4 hover:underline";
 
 const ContactForm = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { amount: 0.1 });
 
   return (
-    <section
-      ref={ref}
-      className="relative w-full h-fit flex flex-col md:flex-row gap-2"
-    >
-      <div className="h-fit w-full md:w-[380px] space-y-4 p-2">
+    // If the parent page already adds padding, remove the px/py classes here.
+    <section ref={ref} className="w-full px-4 py-8 lg:px-[120px] lg:py-16">
+      <div className="mx-auto grid max-w-screen-xl overflow-hidden rounded-3xl shadow-2xl lg:grid-cols-[2fr_3fr]">
+        {/* Info panel */}
         <motion.div
           variants={fadeInOut("right", "tween", 0.2, 0.8)}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="w-full h-fit flex-center overflow-hidden"
+          className="flex flex-col gap-8 bg-[#161540] p-6 text-white md:p-10"
         >
-          <Image
-            src="/assets/images/contactUs.png"
-            alt="Contact Us"
-            width={1920}
-            height={1080}
-            loading="eager"
-            className="w-fit h-full object-contain"
-          />
+          <div className="space-y-3">
+            <h2 className="text-3xl font-black md:text-4xl">Get in touch</h2>
+            <p className="max-w-md text-base text-white/75">
+              Email, call, or complete the form and we{"’"}ll get back to you.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <ContactRow icon={MdOutlineEmail} title="Email">
+              <a href="mailto:patelnguptaweb@gmail.com" className={linkClass}>
+                patelnguptaweb@gmail.com
+              </a>
+            </ContactRow>
+            {/* For calls 
+0731-2405500 , 0731-2405511
+For whatsapp 
+7647867870,  8959155000 */}
+            <ContactRow icon={MdOutlinePhone} title="Call">
+              {" "}
+              <a href="tel:+917312405500" className={linkClass}>
+                {" "}
+                0731-2405500{" "}
+              </a>{" "}
+              <a href="tel:+917312405511" className={linkClass}>
+                {" "}
+                0731-2405511{" "}
+              </a>{" "}
+            </ContactRow>{" "}
+            {/* WhatsApp */}{" "}
+            <ContactRow icon={FaWhatsapp} title="WhatsApp">
+              {" "}
+              <a
+                href="https://wa.me/917647867870"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                {" "}
+                7647867870{" "}
+              </a>{" "}
+              <a
+                href="https://wa.me/918959155000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                {" "}
+                8959155000{" "}
+              </a>{" "}
+            </ContactRow>
+            <ContactRow icon={MdOutlineLocationOn} title="Visit us">
+              <a
+                href="https://maps.app.goo.gl/mJr5ybaDxnLhup6g8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                543-544, 4th Floor, Vikram Tower, Sapna Sangeeta Road, Indore
+                (M.P) 452001
+              </a>
+            </ContactRow>
+          </div>
+
+          {/*
+            Image fix: the old <Image className="w-fit h-full"> let the 1920px
+            image overflow its 380px box and get clipped by overflow-hidden.
+            A fixed-ratio frame + `fill` + object-contain always shows the
+            whole image at any width.
+          */}
+          <div className="relative mt-auto aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#E7E8F4]">
+            <Image
+              src="/assets/images/hero.jpg"
+              alt="Contact PATEL & GUPTA"
+              fill
+              priority
+              sizes="(min-width: 1280px) 460px, (min-width: 1024px) 40vw, 100vw"
+              className="object-cover"
+            />
+          </div>
         </motion.div>
-        <motion.p
-          variants={fadeInOut("right", "tween", 0.2, 0.8)}
+
+        {/* Form panel */}
+        <motion.div
+          variants={fadeInOut("left", "tween", 0.2, 0.8)}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="w-full text-sm md:text-md text-balance font-thin"
+          className="bg-white p-6 md:p-10"
         >
-          Email, call, or complete the form to get in touch with us.
-        </motion.p>
-        <div className="space-y-1">
-          <motion.p
-            variants={fadeInOut("right", "tween", 0.2, 1.2)}
-            initial="hidden"
-            animate={isInView ? "show" : "hidden"}
-            className="text-md md:text-lg lg:text-xl text-balance font-semibold"
-          >
-            Email
-          </motion.p>
-          <Link target="_blank" href="mailto:audit@patelngupta.com">
-            <motion.p
-              variants={fadeInOut("right", "tween", 0.2, 1.5)}
-              initial="hidden"
-              animate={isInView ? "show" : "hidden"}
-              className="w-fit text-sm md:text-md text-balance font-thin text-[#7977C6] hover-link"
-            >
-              audit@patelngupta.com
-            </motion.p>
-          </Link>
-        </div>
-        <div className="space-y-1">
-          <motion.p
-            variants={fadeInOut("right", "tween", 0.2, 1.8)}
-            initial="hidden"
-            animate={isInView ? "show" : "hidden"}
-            className="text-md md:text-lg lg:text-xl text-balance font-semibold"
-          >
-            Call
-          </motion.p>
-          <motion.p
-            variants={fadeInOut("right", "tween", 0.2, 2.2)}
-            initial="hidden"
-            animate={isInView ? "show" : "hidden"}
-            className="w-full text-sm md:text-md text-balance font-thin"
-          >
-            <Link
-              target="_blank"
-              href="tel:7647867870"
-              className="w-fit text-[#7977C6] hover-link"
-            >
-              +91 7647867870
-            </Link>
-          </motion.p>
-          <motion.p
-            variants={fadeInOut("right", "tween", 0.2, 2.5)}
-            initial="hidden"
-            animate={isInView ? "show" : "hidden"}
-            className="w-full text-sm md:text-md text-balance font-thin"
-          >
-            <Link
-              target="_blank"
-              href="tel:7312405500"
-              className="w-fit text-[#7977C6] hover-link"
-            >
-              +91 7312405500
-            </Link>
-          </motion.p>
-        </div>
-        <div className="space-y-1">
-          <motion.p
-            variants={fadeInOut("right", "tween", 0.2, 2.8)}
-            initial="hidden"
-            animate={isInView ? "show" : "hidden"}
-            className="text-md md:text-lg lg:text-xl text-balance font-semibold"
-          >
-            Address
-          </motion.p>
-          <Link
-            target="_blank"
-            href="https://maps.app.goo.gl/mJr5ybaDxnLhup6g8"
-          >
-            <motion.p
-              variants={fadeInOut("right", "tween", 0.2, 3)}
-              initial="hidden"
-              animate={isInView ? "show" : "hidden"}
-              className="w-fit text-sm md:text-md text-balance font-thin text-[#7977C6] hover-link"
-            >
-              543-544, 4th Floor: Vikram Tower, Sapna Sangeeta Road. Indore
-              (M.P) 452001
-            </motion.p>
-          </Link>
-        </div>
+          <Form />
+        </motion.div>
       </div>
-      <motion.div
-        variants={fadeInOut("left", "tween", 0.2, 0.8)}
-        initial="hidden"
-        animate={isInView ? "show" : "hidden"}
-        className="h-fit w-full lg:h-full flex flex-1 flex-col gap-2 bg-white/70 backdrop-blur-md rounded-2xl shadow-2xl p-2 lg:p-4"
-      >
-        <Form />
-      </motion.div>
     </section>
   );
 };
 
 export default ContactForm;
 
-interface FormErrors {
-  name?: string;
-  email?: string;
-  phone?: string;
-  message?: string;
-}
+const ContactRow = ({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: IconType;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div className="flex items-start gap-4">
+    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 text-[#B9B8E8]">
+      <Icon size={22} aria-hidden="true" />
+    </span>
+    <div className="min-w-0 space-y-0.5">
+      <p className="text-sm text-white/60">{title}</p>
+      {children}
+    </div>
+  </div>
+);
+
+/* -------------------------------------------------------------------------- */
+/*  Form                                                                      */
+/* -------------------------------------------------------------------------- */
+
+type Values = { name: string; email: string; phone: string; message: string };
+type Field = keyof Values;
+type Errors = Partial<Record<Field, string>>;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[0-9]{10}$/;
+
+const emptyValues: Values = { name: "", email: "", phone: "", message: "" };
+
+const validate = (v: Values): Errors => {
+  const e: Errors = {};
+  if (!v.name.trim()) e.name = "Please enter your name.";
+  if (!v.email.trim()) e.email = "Please enter your email.";
+  else if (!EMAIL_RE.test(v.email.trim()))
+    e.email = "Enter a valid email address.";
+  if (!v.phone) e.phone = "Please enter your phone number.";
+  else if (!PHONE_RE.test(v.phone)) e.phone = "Enter a 10-digit phone number.";
+  if (!v.message.trim()) e.message = "Please tell us how we can help.";
+  return e;
+};
+
+const inputClass = (hasError: boolean) =>
+  `w-full rounded-lg border bg-white px-4 py-3 text-base text-[#161540] outline-none transition placeholder:text-zinc-400 focus:border-[#7977C6] focus:ring-2 focus:ring-[#7977C6]/30 ${
+    hasError ? "border-red-500" : "border-zinc-300"
+  }`;
+
+const FieldWrap = ({
+  id,
+  label,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) => (
+  <div className="space-y-1.5">
+    <label htmlFor={id} className="block text-sm font-medium text-[#161540]">
+      {label}
+    </label>
+    {children}
+    {error && (
+      <p id={`${id}-error`} role="alert" className="text-sm text-red-600">
+        {error}
+      </p>
+    )}
+  </div>
+);
 
 const Form: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
+  const [values, setValues] = useState<Values>(emptyValues);
+  const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const errors = validate(values);
+  // Show an error only after the field was left once, or after a submit attempt.
+  const errorFor = (f: Field) => (touched[f] ? errors[f] : undefined);
 
-  const validateEmail = (email: string): boolean => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  };
+  const handleChange =
+    (field: Field) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const raw = e.target.value;
+      const value =
+        field === "phone" ? raw.replace(/\D/g, "").slice(0, 10) : raw;
+      setValues((prev) => ({ ...prev, [field]: value }));
+    };
 
-  const validatePhone = (phone: string): boolean => {
-    const phonePattern = /^[0-9]{10}$/;
-    return phonePattern.test(phone);
-  };
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-    if (!e.target.value) {
-      setErrors((prev) => ({ ...prev, name: "Name is required" }));
-    } else {
-      setErrors((prev) => ({ ...prev, name: "" }));
-    }
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    if (!e.target.value) {
-      setErrors((prev) => ({ ...prev, email: "Email is required" }));
-    } else if (!validateEmail(e.target.value)) {
-      setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
-    } else {
-      setErrors((prev) => ({ ...prev, email: "" }));
-    }
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputPhone = e.target.value.replace(/[^\d]/g, "").slice(0, 10);
-    setPhone(inputPhone);
-    if (!inputPhone) {
-      setErrors((prev) => ({ ...prev, phone: "Phone number is required" }));
-    } else if (!validatePhone(inputPhone)) {
-      setErrors((prev) => ({
-        ...prev,
-        phone: "Minimum phone number should be 10",
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, phone: "" }));
-    }
-  };
-
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-    if (!e.target.value) {
-      setErrors((prev) => ({ ...prev, message: "Message is required" }));
-    } else {
-      setErrors((prev) => ({ ...prev, message: "" }));
-    }
-  };
+  const handleBlur = (field: Field) => () =>
+    setTouched((prev) => ({ ...prev, [field]: true }));
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setTouched({ name: true, email: true, phone: true, message: true });
+    if (Object.keys(errors).length > 0) return;
 
-    let formErrors: FormErrors = {};
+    setIsSubmitting(true);
+    try {
+      const response = await sendEmail(
+        values.name.trim(),
+        values.email.trim(),
+        values.phone,
+        values.message.trim(),
+      );
 
-    // Validate form fields
-    if (!name) formErrors.name = "Name is required";
-    if (!email) formErrors.email = "Email is required";
-    else if (!validateEmail(email)) formErrors.email = "Invalid email format";
-
-    if (!phone) formErrors.phone = "Phone number is required";
-    else if (!validatePhone(phone))
-      formErrors.phone = "Invalid phone number format";
-
-    if (!message) formErrors.message = "Message is required";
-
-    setErrors(formErrors);
-
-    if (Object.keys(formErrors).length === 0) {
-      setIsSubmitting(true);
-
-      try {
-        const response = await sendEmail(name, email, phone, message);
-
-        if (response.success) {
-          toast({
-            title: "Email sent successfully!",
-            description: "We'll reach out to you very soon.",
-          });
-          setName("");
-          setEmail("");
-          setPhone("");
-          setMessage("");
-        } else {
-          toast({
-            title: "Failed to send email.",
-            description: "Please try again later.",
-            variant: "destructive",
-          });
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
+      if (response.success) {
         toast({
-          title: "An unexpected error occurred.",
+          title: "Email sent successfully!",
+          description: "We'll reach out to you very soon.",
+        });
+        setValues(emptyValues);
+        setTouched({});
+      } else {
+        toast({
+          title: "Failed to send email.",
           description: "Please try again later.",
           variant: "destructive",
         });
-      } finally {
-        setIsSubmitting(false);
       }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "An unexpected error occurred.",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  const describe = (f: Field) => (errorFor(f) ? `${f}-error` : undefined);
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-1 mb-0">
-        <p className="text-md md:text-lg lg:text-xl font-bold">Get in touch</p>
-        <p className="text-sm md:text-md">You Can Reach Us Anytime.</p>
+    <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      <div className="space-y-1">
+        <h3 className="text-2xl font-bold text-[#161540] md:text-3xl">
+          Send us a message
+        </h3>
+        <p className="text-sm text-zinc-600 md:text-base">
+          Fill in the form and we{"’"}ll reach out to you. Fields marked * are
+          required.
+        </p>
       </div>
 
-      <div>
-        <label htmlFor="name" className="block font-medium">
-          Name*
-        </label>
-        <input
-          id="name"
-          type="text"
-          value={name}
-          onChange={handleNameChange}
-          className="w-full border rounded px-3 py-2"
-        />
-        {errors.name && (
-          <span className="text-red-500 text-sm">{errors.name}</span>
-        )}
+      <div className="grid gap-5 md:grid-cols-2">
+        <FieldWrap id="name" label="Name*" error={errorFor("name")}>
+          <input
+            id="name"
+            type="text"
+            autoComplete="name"
+            placeholder="Your full name"
+            value={values.name}
+            onChange={handleChange("name")}
+            onBlur={handleBlur("name")}
+            aria-invalid={!!errorFor("name")}
+            aria-describedby={describe("name")}
+            className={inputClass(!!errorFor("name"))}
+          />
+        </FieldWrap>
+
+        <FieldWrap id="phone" label="Phone number*" error={errorFor("phone")}>
+          <input
+            id="phone"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder="10-digit mobile number"
+            value={values.phone}
+            onChange={handleChange("phone")}
+            onBlur={handleBlur("phone")}
+            aria-invalid={!!errorFor("phone")}
+            aria-describedby={describe("phone")}
+            className={inputClass(!!errorFor("phone"))}
+          />
+        </FieldWrap>
       </div>
 
-      <div>
-        <label htmlFor="email" className="block font-medium">
-          Email*
-        </label>
+      <FieldWrap id="email" label="Email*" error={errorFor("email")}>
         <input
           id="email"
           type="email"
-          value={email}
-          onChange={handleEmailChange}
-          className="w-full border rounded px-3 py-2"
+          autoComplete="email"
+          placeholder="you@example.com"
+          value={values.email}
+          onChange={handleChange("email")}
+          onBlur={handleBlur("email")}
+          aria-invalid={!!errorFor("email")}
+          aria-describedby={describe("email")}
+          className={inputClass(!!errorFor("email"))}
         />
-        {errors.email && (
-          <span className="text-red-500 text-sm">{errors.email}</span>
-        )}
-      </div>
+      </FieldWrap>
 
-      <div>
-        <label htmlFor="phone" className="block font-medium">
-          Phone Number*
-        </label>
-        <input
-          id="phone"
-          type="text"
-          value={phone}
-          onChange={handlePhoneChange}
-          className="w-full border rounded px-3 py-2"
-        />
-        {errors.phone && (
-          <span className="text-red-500 text-sm">{errors.phone}</span>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block font-medium">
-          Message
-        </label>
+      <FieldWrap id="message" label="Message*" error={errorFor("message")}>
         <textarea
           id="message"
-          value={message}
-          onChange={handleMessageChange}
-          className="w-full border rounded px-3 py-2"
-          rows={4}
+          rows={5}
+          placeholder="How can we help you?"
+          value={values.message}
+          onChange={handleChange("message")}
+          onBlur={handleBlur("message")}
+          aria-invalid={!!errorFor("message")}
+          aria-describedby={describe("message")}
+          className={`${inputClass(!!errorFor("message"))} resize-y`}
         />
-        {errors.message && (
-          <span className="text-red-500 text-sm">{errors.message}</span>
-        )}
-      </div>
+      </FieldWrap>
 
       <Button
         type="submit"
-        className={`w-full bg-[#7977C6] font-bold text-white rounded py-2 ${
-          isSubmitting || Object.values(errors).some(Boolean)
-            ? "opacity-50 cursor-not-allowed"
-            : "active:translate-y-0.5 ease-in-out duration-300"
-        }`}
-        disabled={isSubmitting || Object.values(errors).some(Boolean)}
+        disabled={isSubmitting}
+        className="h-12 w-full rounded-lg bg-[#7977C6] text-base font-bold text-white transition duration-300 hover:bg-[#6866B5] active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "Submitting..." : "Submit"}
+        {isSubmitting ? "Sending..." : "Send message"}
       </Button>
     </form>
   );

@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { BsTelephone } from "react-icons/bs";
+import { FaWhatsapp } from "react-icons/fa6";
+
 import MobileNav from "./MobileNav";
 import { links } from "@/lib/data";
-import { BsTelephone } from "react-icons/bs";
-import Image from "next/image";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,141 +17,283 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "../ui/navigation-menu";
 
-const Navbar: React.FC<{ appName?: string }> = ({ appName = "LOGO" }) => {
+const Navbar: React.FC<{ appName?: string }> = ({
+  appName = "LOGO",
+}) => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 83);
+      setIsScrolled(window.scrollY > 30);
     };
 
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  return (
-    <div
-      className={`sticky top-0 z-[999] h-[60px] w-full flex-between ${
-        isScrolled ? "bg-white" : pathname === "/" ? "bg-white" : "bg-[#E7E8F4]"
-      } text-black p-2 px-4 md:px-6 lg:px-20 xl:px-28 2xl:px-32 transition-colors duration-300`}
-    >
-      <Link
-        href="/"
-        className="w-48 md:w-60 h-fit animate-slide-down overflow-hidden"
-      >
-        <Image
-          src="/logo.png"
-          alt="logo"
-          // width={200}
-          // height={200}
-          width={1920}
-          height={1080}
-          loading="eager"
-          priority
-          className="w-fit h-fit"
-        />
-      </Link>
+  const isHome = pathname === "/";
 
-      <MobileNav />
-      <NavigationMenu className="hidden md:flex">
-        <NavigationMenuList className="relative hidden md:flex items-center gap-4 md:gap-5 lg:gap-7 xl:gap-10 animate-slide-down text-md font-thin">
-          {links.map((link, index) => {
-            const isActive = pathname === link.href;
-            return (
-              <NavigationMenuItem key={index} className="">
-                {link.pages ? (
-                  <>
-                    <NavigationMenuTrigger className="bg-transparent border-none outline-none p-1">
-                      <Link
-                        href={link.href}
-                        legacyBehavior
-                        passHref
-                        className={`capitalize cursor-pointer hover-link ${
-                          isActive ? "font-semibold active" : ""
-                        } ease-in-out duration-200`}
+  return (
+    <header
+      className={`
+        sticky top-0 z-[999]
+        w-full
+        border-b
+        transition-all duration-300
+        ${
+          isScrolled
+            ? "border-zinc-200/80 bg-white/95 shadow-sm backdrop-blur-xl"
+            : isHome
+              ? "border-transparent bg-white"
+              : "border-transparent bg-[#E7E8F4]"
+        }
+      `}
+    >
+      <div
+        className="
+          mx-auto flex h-[68px] w-full max-w-[1600px]
+          items-center justify-between
+          px-5
+          sm:px-7
+          md:h-[72px] md:px-8
+          lg:px-12
+          xl:px-16
+          2xl:px-20
+        "
+      >
+        {/* Logo */}
+        <Link
+          href="/"
+          aria-label={`${appName} home`}
+          className="
+            relative z-10
+            flex h-10 w-36
+            shrink-0 items-center
+            overflow-hidden
+            transition-transform duration-300
+            hover:scale-[1.02]
+            sm:w-40
+            md:w-44
+          "
+        >
+          <Image
+            src="/logo.png"
+            alt={appName}
+            width={1920}
+            height={1080}
+            priority
+            className="h-auto w-full object-contain"
+          />
+        </Link>
+
+        {/* Desktop Navigation */}
+        <NavigationMenu className="hidden lg:flex">
+          <NavigationMenuList
+            className="
+              flex items-center
+              gap-1
+              xl:gap-2
+            "
+          >
+            {links.map((link, index) => {
+              const isActive = pathname === link.href;
+
+              return (
+                <NavigationMenuItem key={index}>
+                  {link.pages ? (
+                    <>
+                      <NavigationMenuTrigger
+                        className={`
+                          h-10
+                          bg-transparent
+                          px-3
+                          text-sm
+                          font-normal
+                          capitalize
+                          text-zinc-700
+                          hover:bg-zinc-100
+                          hover:text-zinc-950
+                          data-[state=open]:bg-zinc-100
+                          data-[state=open]:text-zinc-950
+                          ${
+                            isActive
+                              ? "font-medium text-zinc-950"
+                              : ""
+                          }
+                        `}
                       >
                         {link.head}
-                      </Link>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="w-fit space-y-2 p-2">
-                      {link.pages.map((link, index) => {
-                        const isActive = pathname === link.href;
-                        return (
-                          <div key={index} className="w-24">
-                            <Link
-                              href={link.href}
-                              className={`w-fit capitalize cursor-pointer hover-link ${
-                                isActive ? "font-semibold active" : ""
-                              } ease-in-out duration-200`}
-                            >
-                              {link.head}
-                            </Link>
-                          </div>
-                        );
-                      })}
-                    </NavigationMenuContent>
-                  </>
-                ) : (
-                  <Link href={link.href} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={`capitalize cursor-pointer hover-link ${
-                        isActive ? "font-semibold active" : ""
-                      } ease-in-out duration-200`}
-                    >
-                      {link.head}
-                    </NavigationMenuLink>
-                  </Link>
-                )}
-              </NavigationMenuItem>
-            );
-          })}
-        </NavigationMenuList>
-      </NavigationMenu>
-      {/* <nav className="relative hidden md:flex items-center gap-4 md:gap-5 lg:gap-7 xl:gap-10 animate-slide-down text-sm font-thin">
-        {links.map((link, index) => {
-          const isActive = pathname === link.href;
-          return (
-            <div key={index} className="relative">
-              <Link
-                href={link.href}
-                className={`capitalize cursor-pointer hover-link ${
-                  isActive ? "font-semibold active" : ""
-                } ease-in-out duration-200`}
-              >
-                {link.head}
-              </Link>
-              {link.pages && (
-                <div className="absolute z-50 -bottom-10 w-full h-full br"></div>
-              )}
-            </div>
-          );
-        })}
-      </nav> */}
+                      </NavigationMenuTrigger>
 
-      <Link
-        href={"tel:+917647867870"}
-        className="relative hidden animate-slide-down group w-fit h-10 md:h-14 lg:flex items-center gap-2 p-1 overflow-hidden"
-      >
-        <div className="w-8 h-8 lg:w-10 lg:h-10 p-1 flex-center rounded-full bg-[#7a77c641] group-hover:bg-transparent group-hover:border group-hover:border-[#7a77c6d2] ease-in-out duration-300">
-          <BsTelephone
-            size={20}
-            className="group-hover:fill-[#7a77c6d2] ease-in-out duration-300"
-          />
+                      <NavigationMenuContent>
+                        <div
+                          className="
+                            grid
+                            min-w-[180px]
+                            gap-1
+                            rounded-xl
+                            bg-white
+                            p-2
+                          "
+                        >
+                          {link.pages.map(
+                            (page, pageIndex) => {
+                              const pageActive =
+                                pathname === page.href;
+
+                              return (
+                                <Link
+                                  key={pageIndex}
+                                  href={page.href}
+                                  className={`
+                                    rounded-lg
+                                    px-3 py-2
+                                    text-sm
+                                    capitalize
+                                    transition-colors duration-200
+                                    ${
+                                      pageActive
+                                        ? "bg-zinc-100 font-medium text-zinc-950"
+                                        : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-950"
+                                    }
+                                  `}
+                                >
+                                  {page.head}
+                                </Link>
+                              );
+                            }
+                          )}
+                        </div>
+                      </NavigationMenuContent>
+                    </>
+                  ) : (
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={link.href}
+                        className={`
+                          relative
+                          flex h-10
+                          items-center
+                          rounded-lg
+                          px-3
+                          text-sm
+                          font-normal
+                          capitalize
+                          text-zinc-700
+                          transition-colors duration-200
+                          hover:bg-zinc-100
+                          hover:text-zinc-950
+                          ${
+                            isActive
+                              ? "font-medium text-zinc-950"
+                              : ""
+                          }
+                        `}
+                      >
+                        {link.head}
+
+                        {isActive && (
+                          <span
+                            className="
+                              absolute
+                              bottom-1
+                              left-1/2
+                              h-1
+                              w-1
+                              -translate-x-1/2
+                              rounded-full
+                              bg-[#7977C6]
+                            "
+                          />
+                        )}
+                      </Link>
+                    </NavigationMenuLink>
+                  )}
+                </NavigationMenuItem>
+              );
+            })}
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        {/* Desktop Contact */}
+        <div className="hidden items-center gap-3 lg:flex">
+          {/* WhatsApp */}
+          <Link
+            href="https://wa.me/917647867870"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
+            className="
+              flex h-10 w-10
+              items-center justify-center
+              rounded-full
+              border border-zinc-200
+              text-[#25D366]
+              transition-all duration-300
+              hover:-translate-y-0.5
+              hover:border-[#25D366]
+              hover:bg-[#25D366]/5
+            "
+          >
+            <FaWhatsapp className="h-[18px] w-[18px]" />
+          </Link>
+
+          {/* Hotline */}
+          <Link
+            href="tel:+917312405500"
+            className="
+              group
+              flex items-center gap-3
+              rounded-full
+              border border-zinc-200
+              bg-white
+              px-3 py-2
+              transition-all duration-300
+              hover:border-zinc-300
+              hover:shadow-sm
+            "
+          >
+            <div
+              className="
+                flex h-8 w-8
+                items-center justify-center
+                rounded-full
+                bg-[#7977C6]/10
+                transition-colors duration-300
+                group-hover:bg-[#7977C6]/15
+              "
+            >
+              <BsTelephone
+                className="h-4 w-4 text-[#7977C6]"
+              />
+            </div>
+
+            <div className="flex flex-col leading-none">
+              <span className="mb-1 text-[9px] font-medium uppercase tracking-wider text-zinc-400">
+                Hotline
+              </span>
+
+              <span className="text-sm font-semibold text-zinc-800">
+                0731-2405500
+              </span>
+            </div>
+          </Link>
         </div>
-        <div className="hidden md:flex flex-col w-fit h-full py-0.5">
-          <span className="text-xs">Hotline 24/7</span>
-          <span className="md:text-lg lg:text-xl font-medium">
-            +91 7647867870
-          </span>
+
+        {/* Mobile Navigation */}
+        <div className="lg:hidden">
+          <MobileNav />
         </div>
-      </Link>
-    </div>
+      </div>
+    </header>
   );
 };
 

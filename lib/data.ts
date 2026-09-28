@@ -12,15 +12,15 @@ export const links: LinkValues[] = [
   { id: 0, head: "Home", href: "/" },
   { id: 3, head: "About Us", href: "/about-us" },
   { id: 2, head: "Service", href: "/service" },
-  {
-    id: 3,
-    head: "Blog",
-    href: "/blog/post",
-    pages: [
-      { id: 0, head: "Post", href: "/blog/post" },
-      { id: 1, head: "What We Do", href: "/blog/what-we-do" },
-    ],
-  },
+  // {
+  //   id: 3,
+  //   head: "Blog",
+  //   href: "/blog/post",
+  //   pages: [
+  //     { id: 0, head: "Post", href: "/blog/post" },
+  //     { id: 1, head: "What We Do", href: "/blog/what-we-do" },
+  //   ],
+  // },
   { id: 4, head: "Contact", href: "/contact" },
 ];
 
@@ -275,10 +275,10 @@ export const footerData = {
         { label: "Contact us", href: "/contact" },
       ],
     },
-    {
-      title: "Learn",
-      links: [{ label: "Our Blog", href: "/blog" }],
-    },
+    // {
+    //   title: "Learn",
+    //   links: [{ label: "Our Blog", href: "/blog" }],
+    // },
     {
       title: "Resources",
       links: [{ label: "FAQs", href: "/#faqs" }],
