@@ -11,7 +11,6 @@ import {
 import { motion, useInView } from "framer-motion";
 import { fadeInOut } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { sendEmail } from "@/lib/actions/sendEmail.action";
 import { toast } from "../ui/use-toast";
 import { FaWhatsapp } from "react-icons/fa";
 
@@ -229,45 +228,53 @@ const Form: React.FC = () => {
   const handleBlur = (field: Field) => () =>
     setTouched((prev) => ({ ...prev, [field]: true }));
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setTouched({ name: true, email: true, phone: true, message: true });
-    if (Object.keys(errors).length > 0) return;
 
-    setIsSubmitting(true);
-    try {
-      const response = await sendEmail(
-        values.name.trim(),
-        values.email.trim(),
-        values.phone,
-        values.message.trim(),
-      );
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setTouched({ name: true, email: true, phone: true, message: true });
+  if (Object.keys(errors).length > 0) return;
 
-      if (response.success) {
-        toast({
-          title: "Email sent successfully!",
-          description: "We'll reach out to you very soon.",
-        });
-        setValues(emptyValues);
-        setTouched({});
-      } else {
-        toast({
-          title: "Failed to send email.",
-          description: "Please try again later.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
+  setIsSubmitting(true);
+  try {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        phone: values.phone.trim(),
+        message: values.message.trim(),
+      }),
+    });
+
+    // Non-JSON responses (e.g. a 500 HTML page) shouldn't crash the handler
+    const data = await response.json().catch(() => null);
+
+    if (response.ok && data?.success) {
       toast({
-        title: "An unexpected error occurred.",
-        description: "Please try again later.",
+        title: "Email sent successfully!",
+        description: "We'll reach out to you very soon.",
+      });
+      setValues(emptyValues);
+      setTouched({});
+    } else {
+      toast({
+        title: "Failed to send email.",
+        description: data?.message || "Please try again later.",
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    toast({
+      title: "An unexpected error occurred.",
+      description: "Please try again later.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const describe = (f: Field) => (errorFor(f) ? `${f}-error` : undefined);
 

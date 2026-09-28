@@ -7,7 +7,6 @@ import { motion, useInView } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
 import { PiHandshakeLight } from "react-icons/pi";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
-import { sendEmail } from "@/lib/actions/sendEmail.action";
 import { toast } from "../ui/use-toast";
 
 export default function JoinUs() {
@@ -149,6 +148,7 @@ interface FormProps {
 
 interface FormErrors {
   name?: string;
+  email?: string;
   phone?: string;
   message?: string;
 }
@@ -199,55 +199,76 @@ const Form: React.FC<FormProps> = ({ email, setEmail, handleClose }) => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    let formErrors: FormErrors = {};
 
-    if (!name) formErrors.name = "Name is required";
-    if (!phone) formErrors.phone = "Phone number is required";
-    else if (!validatePhone(phone))
-      formErrors.phone = "Invalid phone number format";
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (!message) formErrors.message = "Message is required";
+  let formErrors: FormErrors = {};
 
-    setErrors(formErrors);
+  if (!name) formErrors.name = "Name is required";
 
-    if (Object.keys(formErrors).length === 0) {
-      setIsSubmitting(true);
+  // The API requires an email, so validate it here too
+  // (add `email?: string` to FormErrors if it isn't there already)
+  if (!email) formErrors.email = "Email is required";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    formErrors.email = "Invalid email address";
 
-      try {
-        const response = await sendEmail(name, email, phone, message);
+  if (!phone) formErrors.phone = "Phone number is required";
+  else if (!validatePhone(phone))
+    formErrors.phone = "Invalid phone number format";
 
-        if (response.success) {
-          toast({
-            title: "Email sent successfully!",
-            description: "We'll reach out to you very soon.",
-          });
-          setName("");
-          setEmail("");
-          setPhone("");
-          setMessage("");
-          handleClose();
-        } else {
-          toast({
-            title: "Failed to send email.",
-            description: "Please try again later.",
-            variant: "destructive",
-          });
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
+  if (!message) formErrors.message = "Message is required";
+
+  setErrors(formErrors);
+
+  if (Object.keys(formErrors).length === 0) {
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          message: message.trim(),
+        }),
+      });
+
+      // Non-JSON responses (e.g. a 500 HTML page) shouldn't crash the handler
+      const data = await response.json().catch(() => null);
+
+      if (response.ok && data?.success) {
         toast({
-          title: "An unexpected error occurred.",
-          description: "Please try again later.",
+          title: "Email sent successfully!",
+          description: "We'll reach out to you very soon.",
+        });
+        setName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+        handleClose();
+      } else {
+        toast({
+          title: "Failed to send email.",
+          description: data?.message || "Please try again later.",
           variant: "destructive",
         });
-      } finally {
-        setIsSubmitting(false);
       }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "An unexpected error occurred.",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  };
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className="w-full p-2 text-white space-y-4">

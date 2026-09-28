@@ -7,7 +7,6 @@ import { FiPhoneOutgoing } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
 import { SlLocationPin } from "react-icons/sl";
 import ContactForm from "./Form";
-import Link from "next/link";
 import Carousel from "../ui/Carousel";
 
 const Contact = () => {
