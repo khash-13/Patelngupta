@@ -66,7 +66,7 @@ const rawBranches: Branch[] = [
 // Use the custom link when given, otherwise build one from the address
 const branches = rawBranches.map((b) => ({ ...b, visit: b.visit || mapsUrl(b.address) }));
 
-const contact = { email: "patelandguptaweb@gmail.com" };
+const contact = { email: "patelandguptaweb@gmail.com"  };
 
 const phoneNumbers: LinkItem[] = [
   { label: "0731-2405500", href: "tel:+917312405500" },
