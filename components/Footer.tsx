@@ -80,8 +80,8 @@ const whatsappNumbers: LinkItem[] = [
 
 const career = {
   contactName: "HR / Career Contact",
-  phone: "+91-8959155000",
-  email: "mithil@patelngupta.com",
+  phone: "+91-7312405500",
+  email: "audit@patelngupta.com",
   message: "To know about current openings!",
   linkLabel: "Contact Us",
   link: "/contact",
