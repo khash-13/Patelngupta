@@ -123,7 +123,7 @@ const Story = () => {
           Our Story
         </motion.h2>
 
-        <div className="w-full h-5/6 absolute bottom-0">
+        <div className="w-full h-5/6 lg:absolute my-2 bottom-0">
                 <motion.div
           variants={fadeInOut("right", "tween", 0.2, 0.8)}
           {...reveal(isInView)}
@@ -343,7 +343,7 @@ const OurTeam: React.FC = () => {
           </p>
         </motion.div>
 
-<div className="grid grid-cols-5 gap-4 w-full">
+<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 w-full">
   {ourTeam.map((card, index) => (
     <motion.div
       key={card.id}
@@ -418,7 +418,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
       {/* Description */}
       <div
         className="
-          absolute inset-x-5 bottom-[80px]
+          absolute inset-x-5 top-10
           z-10
           translate-y-5 opacity-0
           transition-all duration-500 ease-out
@@ -430,7 +430,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
       >
         <div className="mb-4 h-px w-10 bg-white/40" />
 
-        <p className="text-xs leading-relaxed text-white/85 sm:text-sm">
+        <p className="text-xs absolute leading-relaxed text-white/85 sm:text-sm">
           {card.description}
         </p>
 
@@ -455,7 +455,7 @@ const Card: React.FC<CardProps> = ({ card }) => {
           Team Member
         </p>
 
-        <h3 className="text-lg font-bold leading-tight text-white sm:text-xl">
+        <h3 className="text-lg font-bold leading-tight text-white sm:text-lg">
           {card.name}
         </h3>
       </div>

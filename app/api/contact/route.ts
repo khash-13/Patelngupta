@@ -88,7 +88,7 @@ export async function POST(req: Request) {
         <p style="background-color:#f9f9f9;padding:10px;border-radius:5px;">
           ${safeMessage}
         </p>
-        <p>Best regards,<br>Your Company Name</p>
+        <p>Best regards,<br>Patel N Gupta</p>
       `,
     };
 
